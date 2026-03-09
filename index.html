@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --steel: #2c3440;
+            --slate: #404853;
+            --iron: #5a6473;
+            --zinc: #8b95a5;
+            --concrete: #e8eaed;
+            --warning: #ff6b35;
+            --success: #00c9a7;
+            --accent: #ffd93d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, var(--steel) 0%, #1a1f26 100%);
+            color: var(--concrete);
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            margin-bottom: 3rem;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        h1 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--warning) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--zinc);
+            letter-spacing: 0.1em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        .stat-card {
+            background: rgba(64, 72, 83, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--warning));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 217, 61, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--zinc);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .controls {
+            background: rgba(64, 72, 83, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.8s ease-out 0.4s both;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--zinc);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        input, select {
+            background: rgba(26, 31, 38, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: var(--concrete);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255, 217, 61, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--warning) 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 1rem 2rem;
+            color: var(--steel);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 217, 61, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .inventory-table {
+            background: rgba(64, 72, 83, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out 0.6s both;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: rgba(26, 31, 38, 0.6);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        tbody tr {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 217, 61, 0.05);
+        }
+
+        td {
+            padding: 1rem;
+            color: var(--concrete);
+        }
+
+        .stock-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stock-low {
+            background: rgba(255, 107, 53, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+
+        .stock-ok {
+            background: rgba(0, 201, 167, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            background: rgba(255, 217, 61, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-small:hover {
+            background: var(--accent);
+            color: var(--steel);
+        }
+
+        .btn-delete {
+            border-color: var(--warning);
+            color: var(--warning);
+        }
+
+        .btn-delete:hover {
+            background: var(--warning);
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--zinc);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes rowAppear {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .row-enter {
+            animation: rowAppear 0.4s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Warehouse</h1>
+            <div class="subtitle">Inventory Management System</div>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Items</div>
+                <div class="stat-value" id="totalItems">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Stock</div>
+                <div class="stat-value" id="totalStock">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Low Stock</div>
+                <div class="stat-value" id="lowStock">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Value</div>
+                <div class="stat-value" id="totalValue">$0</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="itemName">Item Name</label>
+                    <input type="text" id="itemName" placeholder="Enter item name">
+                </div>
+                <div class="form-group">
+                    <label for="itemCategory">Category</label>
+                    <select id="itemCategory">
+                        <option value="Electronics">Electronics</option>
+                        <option value="Furniture">Furniture</option>
+                        <option value="Supplies">Supplies</option>
+                        <option value="Equipment">Equipment</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="itemQuantity">Quantity</label>
+                    <input type="number" id="itemQuantity" placeholder="0" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="itemPrice">Unit Price</label>
+                    <input type="number" id="itemPrice" placeholder="0.00" min="0" step="0.01">
+                </div>
+            </div>
+            <button class="btn" id="addBtn"><span>Add Item</span></button>
+        </div>
+
+        <div class="inventory-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Total Value</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryBody">
+                    <tr>
+                        <td colspan="8" class="empty-state">
+                            <div class="empty-state-icon">📦</div>
+                            <div>No items in inventory. Add your first item above.</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        class InventorySystem {
+            constructor() {
+                this.inventory = this.loadInventory();
+                this.nextId = this.getNextId();
+                this.init();
+            }
+
+            init() {
+                this.renderInventory();
+                this.updateStats();
+                this.attachEventListeners();
+            }
+
+            attachEventListeners() {
+                document.getElementById('addBtn').addEventListener('click', () => this.addItem());
+                
+                // Allow Enter key to add item
+                ['itemName', 'itemQuantity', 'itemPrice'].forEach(id => {
+                    document.getElementById(id).addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') this.addItem();
+                    });
+                });
+            }
+
+            addItem() {
+                const name = document.getElementById('itemName').value.trim();
+                const category = document.getElementById('itemCategory').value;
+                const quantity = parseInt(document.getElementById('itemQuantity').value) || 0;
+                const price = parseFloat(document.getElementById('itemPrice').value) || 0;
+
+                if (!name) {
+                    alert('Please enter an item name');
+                    return;
+                }
+
+                if (quantity < 0 || price < 0) {
+                    alert('Quantity and price must be positive numbers');
+                    return;
+                }
+
+                const item = {
+                    id: this.nextId++,
+                    name,
+                    category,
+                    quantity,
+                    price
+                };
+
+                this.inventory.push(item);
+                this.saveInventory();
+                this.renderInventory();
+                this.updateStats();
+                this.clearForm();
+            }
+
+            deleteItem(id) {
+                if (confirm('Are you sure you want to delete this item?')) {
+                    this.inventory = this.inventory.filter(item => item.id !== id);
+                    this.saveInventory();
+                    this.renderInventory();
+                    this.updateStats();
+                }
+            }
+
+            updateQuantity(id, change) {
+                const item = this.inventory.find(item => item.id === id);
+                if (item) {
+                    item.quantity = Math.max(0, item.quantity + change);
+                    this.saveInventory();
+                    this.renderInventory();
+                    this.updateStats();
+                }
+            }
+
+            renderInventory() {
+                const tbody = document.getElementById('inventoryBody');
+                
+                if (this.inventory.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="8" class="empty-state">
+                                <div class="empty-state-icon">📦</div>
+                                <div>No items in inventory. Add your first item above.</div>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = this.inventory.map(item => {
+                    const totalValue = (item.quantity * item.price).toFixed(2);
+                    const stockStatus = item.quantity < 10 ? 'stock-low' : 'stock-ok';
+                    const stockLabel = item.quantity < 10 ? 'Low Stock' : 'In Stock';
+
+                    return `
+                        <tr class="row-enter">
+                            <td><strong>#${item.id}</strong></td>
+                            <td>${item.name}</td>
+                            <td>${item.category}</td>
+                            <td>${item.quantity}</td>
+                            <td>$${item.price.toFixed(2)}</td>
+                            <td><strong>$${totalValue}</strong></td>
+                            <td><span class="stock-badge ${stockStatus}">${stockLabel}</span></td>
+                            <td class="actions">
+                                <button class="btn-small" onclick="inventory.updateQuantity(${item.id}, 1)">+</button>
+                                <button class="btn-small" onclick="inventory.updateQuantity(${item.id}, -1)">-</button>
+                                <button class="btn-small btn-delete" onclick="inventory.deleteItem(${item.id})">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            updateStats() {
+                const totalItems = this.inventory.length;
+                const totalStock = this.inventory.reduce((sum, item) => sum + item.quantity, 0);
+                const lowStock = this.inventory.filter(item => item.quantity < 10).length;
+                const totalValue = this.inventory.reduce((sum, item) => sum + (item.quantity * item.price), 0);
+
+                document.getElementById('totalItems').textContent = totalItems;
+                document.getElementById('totalStock').textContent = totalStock;
+                document.getElementById('lowStock').textContent = lowStock;
+                document.getElementById('totalValue').textContent = `$${totalValue.toFixed(2)}`;
+            }
+
+            clearForm() {
+                document.getElementById('itemName').value = '';
+                document.getElementById('itemQuantity').value = '';
+                document.getElementById('itemPrice').value = '';
+                document.getElementById('itemName').focus();
+            }
+
+            saveInventory() {
+                localStorage.setItem('inventory', JSON.stringify(this.inventory));
+                localStorage.setItem('nextId', this.nextId.toString());
+            }
+
+            loadInventory() {
+                const saved = localStorage.getItem('inventory');
+                return saved ? JSON.parse(saved) : [];
+            }
+
+            getNextId() {
+                const saved = localStorage.getItem('nextId');
+                return saved ? parseInt(saved) : 1;
+            }
+        }
+
+        // Initialize the system
+        const inventory = new InventorySystem();
+    </script>
+</body>
+</html>
