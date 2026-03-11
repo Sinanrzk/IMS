@@ -393,6 +393,72 @@
             opacity: 0.3;
         }
 
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .menu-card {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(233, 240, 255, 0.08);
+        }
+
+        .menu-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--zinc);
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-item {
+            background: rgba(7, 11, 20, 0.7);
+            border-radius: 999px;
+            padding: 0.45rem 0.9rem;
+            border: 1px solid rgba(233, 240, 255, 0.16);
+            color: var(--concrete);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            transition: all 0.25s ease;
+        }
+
+        .menu-item span {
+            opacity: 0.8;
+        }
+
+        .menu-item-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px rgba(0, 245, 255, 0.6);
+        }
+
+        .menu-item:hover {
+            border-color: rgba(0, 245, 255, 0.85);
+            box-shadow: 0 0 18px rgba(0, 245, 255, 0.28);
+            transform: translateY(-1px);
+        }
+
+        .menu-item.active {
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.2), rgba(255, 46, 166, 0.28));
+            border-color: rgba(0, 245, 255, 0.95);
+            box-shadow:
+                0 0 0 1px rgba(0, 245, 255, 0.6),
+                0 0 22px rgba(0, 245, 255, 0.32);
+        }
+
         @keyframes slideDown {
             from {
                 opacity: 0;
@@ -483,6 +549,36 @@
                 </div>
             </div>
             <button class="btn" id="addBtn"><span>Add Item</span></button>
+
+            <div class="menu-card">
+                <div class="menu-title">Items Menu</div>
+                <div class="menu-grid" id="itemsMenu">
+                    <button class="menu-item active" data-category="All">
+                        <span class="menu-item-dot"></span>
+                        <span>All Items</span>
+                    </button>
+                    <button class="menu-item" data-category="Electronics">
+                        <span class="menu-item-dot"></span>
+                        <span>Electronics</span>
+                    </button>
+                    <button class="menu-item" data-category="Furniture">
+                        <span class="menu-item-dot"></span>
+                        <span>Furniture</span>
+                    </button>
+                    <button class="menu-item" data-category="Supplies">
+                        <span class="menu-item-dot"></span>
+                        <span>Supplies</span>
+                    </button>
+                    <button class="menu-item" data-category="Equipment">
+                        <span class="menu-item-dot"></span>
+                        <span>Equipment</span>
+                    </button>
+                    <button class="menu-item" data-category="Other">
+                        <span class="menu-item-dot"></span>
+                        <span>Other</span>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="inventory-table">
@@ -516,6 +612,7 @@
             constructor() {
                 this.inventory = this.loadInventory();
                 this.nextId = this.getNextId();
+                this.activeCategory = 'All';
                 this.init();
             }
 
@@ -534,6 +631,32 @@
                         if (e.key === 'Enter') this.addItem();
                     });
                 });
+
+                const menu = document.getElementById('itemsMenu');
+                if (menu) {
+                    menu.addEventListener('click', (event) => {
+                        const target = event.target.closest('.menu-item');
+                        if (!target) return;
+
+                        const category = target.getAttribute('data-category');
+                        this.setActiveCategory(category);
+                    });
+                }
+            }
+
+            setActiveCategory(category) {
+                this.activeCategory = category || 'All';
+
+                const buttons = document.querySelectorAll('#itemsMenu .menu-item');
+                buttons.forEach(btn => {
+                    if (btn.getAttribute('data-category') === this.activeCategory) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+
+                this.renderInventory();
             }
 
             addItem() {
@@ -588,20 +711,24 @@
 
             renderInventory() {
                 const tbody = document.getElementById('inventoryBody');
+                const activeCategory = this.activeCategory || 'All';
+                const visibleItems = activeCategory === 'All'
+                    ? this.inventory
+                    : this.inventory.filter(item => item.category === activeCategory);
                 
-                if (this.inventory.length === 0) {
+                if (visibleItems.length === 0) {
                     tbody.innerHTML = `
                         <tr>
                             <td colspan="8" class="empty-state">
                                 <div class="empty-state-icon">📦</div>
-                                <div>No items in inventory. Add your first item above.</div>
+                                <div>No items to display for this view.</div>
                             </td>
                         </tr>
                     `;
                     return;
                 }
 
-                tbody.innerHTML = this.inventory.map(item => {
+                tbody.innerHTML = visibleItems.map(item => {
                     const totalValue = (item.quantity * item.price).toFixed(2);
                     const stockStatus = item.quantity < 10 ? 'stock-low' : 'stock-ok';
                     const stockLabel = item.quantity < 10 ? 'Low Stock' : 'In Stock';
