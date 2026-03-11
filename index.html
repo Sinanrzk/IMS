@@ -393,6 +393,151 @@
             opacity: 0.3;
         }
 
+        .analytics-card {
+            margin-bottom: 2.5rem;
+            padding: 1.75rem 2rem;
+            border-radius: 12px;
+            background: rgba(7, 11, 20, 0.7);
+            border: 1px solid rgba(233, 240, 255, 0.08);
+            backdrop-filter: blur(12px);
+            box-shadow:
+                0 18px 60px rgba(0, 0, 0, 0.35),
+                0 0 0 1px rgba(0, 245, 255, 0.04);
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
+            gap: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .analytics-card {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .analytics-header {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--zinc);
+            margin-bottom: 0.75rem;
+        }
+
+        .analytics-title {
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .analytics-subtitle {
+            font-size: 0.9rem;
+            color: var(--zinc);
+            max-width: 32rem;
+        }
+
+        .analytics-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1.75rem;
+        }
+
+        .analytics-metric {
+            padding: 0.85rem 1rem;
+            border-radius: 10px;
+            background: rgba(14, 22, 48, 0.8);
+            border: 1px solid rgba(233, 240, 255, 0.06);
+        }
+
+        .analytics-metric-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--zinc);
+            margin-bottom: 0.3rem;
+        }
+
+        .analytics-metric-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+        }
+
+        .analytics-metric-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.1rem 0.6rem;
+            border-radius: 999px;
+            background: rgba(0, 245, 255, 0.1);
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+
+        .analytics-metric-pill-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: var(--accent);
+            box-shadow: 0 0 8px rgba(0, 245, 255, 0.6);
+        }
+
+        .analytics-bars-title {
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .analytics-bars-subtitle {
+            font-size: 0.8rem;
+            color: var(--zinc);
+            margin-bottom: 1.25rem;
+        }
+
+        .analytics-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .analytics-bar-row {
+            display: grid;
+            grid-template-columns: 130px 1fr 52px;
+            gap: 0.75rem;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+
+        .analytics-bar-label {
+            color: var(--zinc);
+        }
+
+        .analytics-bar-track {
+            position: relative;
+            height: 7px;
+            border-radius: 999px;
+            background: rgba(14, 22, 48, 0.9);
+            overflow: hidden;
+        }
+
+        .analytics-bar-fill {
+            position: absolute;
+            inset: 0;
+            width: 0%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--accent), var(--warning), var(--success));
+            box-shadow: 0 0 18px rgba(0, 245, 255, 0.25);
+            transition: width 0.3s ease-out;
+        }
+
+        .analytics-bar-value {
+            text-align: right;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--zinc);
+        }
+
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -503,6 +648,82 @@
             <h1>Warehouse</h1>
             <div class="subtitle">Inventory Management System</div>
         </header>
+
+        <section class="analytics-card" aria-label="Real-time inventory analytics">
+            <div>
+                <div class="analytics-header">Overview</div>
+                <div class="analytics-title">Real-time inventory analytics</div>
+                <div class="analytics-subtitle">
+                    Live insight into stock health, value concentration, and category distribution.
+                    All metrics update automatically as you add, adjust, or remove items.
+                </div>
+
+                <div class="analytics-metrics">
+                    <div class="analytics-metric">
+                        <div class="analytics-metric-label">Low stock items</div>
+                        <div class="analytics-metric-value" id="lowStockSummary">0</div>
+                        <div class="analytics-metric-pill">
+                            <span class="analytics-metric-pill-dot"></span>
+                            <span id="lowStockPercent">0%</span>
+                        </div>
+                    </div>
+
+                    <div class="analytics-metric">
+                        <div class="analytics-metric-label">Average unit price</div>
+                        <div class="analytics-metric-value" id="avgPrice">$0.00</div>
+                    </div>
+
+                    <div class="analytics-metric">
+                        <div class="analytics-metric-label">Top category by value</div>
+                        <div class="analytics-metric-value" id="topCategory">—</div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="analytics-bars-title">Value by category</div>
+                <div class="analytics-bars-subtitle">
+                    Share of total inventory value per category (live).
+                </div>
+                <div class="analytics-bars" id="categoryBars">
+                    <div class="analytics-bar-row">
+                        <div class="analytics-bar-label">Electronics</div>
+                        <div class="analytics-bar-track">
+                            <div class="analytics-bar-fill" data-category="Electronics"></div>
+                        </div>
+                        <div class="analytics-bar-value" data-category-label="Electronics">0%</div>
+                    </div>
+                    <div class="analytics-bar-row">
+                        <div class="analytics-bar-label">Furniture</div>
+                        <div class="analytics-bar-track">
+                            <div class="analytics-bar-fill" data-category="Furniture"></div>
+                        </div>
+                        <div class="analytics-bar-value" data-category-label="Furniture">0%</div>
+                    </div>
+                    <div class="analytics-bar-row">
+                        <div class="analytics-bar-label">Supplies</div>
+                        <div class="analytics-bar-track">
+                            <div class="analytics-bar-fill" data-category="Supplies"></div>
+                        </div>
+                        <div class="analytics-bar-value" data-category-label="Supplies">0%</div>
+                    </div>
+                    <div class="analytics-bar-row">
+                        <div class="analytics-bar-label">Equipment</div>
+                        <div class="analytics-bar-track">
+                            <div class="analytics-bar-fill" data-category="Equipment"></div>
+                        </div>
+                        <div class="analytics-bar-value" data-category-label="Equipment">0%</div>
+                    </div>
+                    <div class="analytics-bar-row">
+                        <div class="analytics-bar-label">Other</div>
+                        <div class="analytics-bar-track">
+                            <div class="analytics-bar-fill" data-category="Other"></div>
+                        </div>
+                        <div class="analytics-bar-value" data-category-label="Other">0%</div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <div class="stats-grid">
             <div class="stat-card">
@@ -762,6 +983,57 @@
                 document.getElementById('totalStock').textContent = totalStock;
                 document.getElementById('lowStock').textContent = lowStock;
                 document.getElementById('totalValue').textContent = `$${totalValue.toFixed(2)}`;
+
+                const lowStockSummary = document.getElementById('lowStockSummary');
+                const lowStockPercent = document.getElementById('lowStockPercent');
+                const avgPriceEl = document.getElementById('avgPrice');
+                const topCategoryEl = document.getElementById('topCategory');
+
+                if (lowStockSummary && lowStockPercent && avgPriceEl && topCategoryEl) {
+                    const lowPercent = totalItems > 0 ? Math.round((lowStock / totalItems) * 100) : 0;
+                    lowStockSummary.textContent = `${lowStock} of ${totalItems || 0}`;
+                    lowStockPercent.textContent = `${lowPercent}%`;
+
+                    const avgPrice = totalItems > 0
+                        ? this.inventory.reduce((sum, item) => sum + item.price, 0) / totalItems
+                        : 0;
+                    avgPriceEl.textContent = `$${avgPrice.toFixed(2)}`;
+
+                    const categoryTotals = this.inventory.reduce((acc, item) => {
+                        const key = item.category || 'Other';
+                        acc[key] = (acc[key] || 0) + (item.quantity * item.price);
+                        return acc;
+                    }, {});
+
+                    let topCategory = null;
+                    let topValue = 0;
+                    Object.entries(categoryTotals).forEach(([category, value]) => {
+                        if (value > topValue) {
+                            topValue = value;
+                            topCategory = category;
+                        }
+                    });
+
+                    topCategoryEl.textContent = topCategory ? `${topCategory}` : '—';
+
+                    const trackedCategories = ['Electronics', 'Furniture', 'Supplies', 'Equipment', 'Other'];
+                    const totalCategoryValue = Object.values(categoryTotals).reduce((sum, v) => sum + v, 0);
+
+                    trackedCategories.forEach(category => {
+                        const value = categoryTotals[category] || 0;
+                        const percent = totalCategoryValue > 0 ? Math.round((value / totalCategoryValue) * 100) : 0;
+
+                        const bar = document.querySelector(`.analytics-bar-fill[data-category="${category}"]`);
+                        const label = document.querySelector(`.analytics-bar-value[data-category-label="${category}"]`);
+
+                        if (bar) {
+                            bar.style.width = `${percent}%`;
+                        }
+                        if (label) {
+                            label.textContent = `${percent}%`;
+                        }
+                    });
+                }
             }
 
             clearForm() {
