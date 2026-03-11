@@ -7,14 +7,19 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --steel: #212937;
-            --slate: #404853;
-            --iron: #5a6473;
-            --zinc: #8b95a5;
-            --concrete: #e8eaed;
-            --warning: #ff6b35;
-            --success: #034237;
-            --accent: #ffd93d;
+            --steel: #070B14;        /* deep space */
+            --slate: #0E1630;        /* panel base */
+            --iron: #18224A;         /* elevated panel */
+            --zinc: #8EA3D4;         /* secondary text */
+            --concrete: #E9F0FF;     /* primary text */
+
+            --accent: #00F5FF;       /* neon cyan */
+            --warning: #FF2EA6;      /* neon magenta */
+            --success: #00FF85;      /* neon green */
+
+            --glowCyan: rgba(0, 245, 255, 0.25);
+            --glowMagenta: rgba(255, 46, 166, 0.22);
+            --glowGreen: rgba(0, 255, 133, 0.18);
         }
 
         * {
@@ -25,7 +30,11 @@
 
         body {
             font-family: 'Outfit', sans-serif;
-            background: linear-gradient(135deg, var(--steel) 0%, #1a1f26 100%);
+            background:
+                radial-gradient(1200px 700px at 15% 10%, rgba(0, 245, 255, 0.12), transparent 60%),
+                radial-gradient(900px 600px at 85% 20%, rgba(255, 46, 166, 0.10), transparent 55%),
+                radial-gradient(1100px 700px at 60% 95%, rgba(0, 255, 133, 0.08), transparent 55%),
+                linear-gradient(135deg, var(--steel) 0%, #05060D 100%);
             color: var(--concrete);
             min-height: 100vh;
             padding: 2rem;
@@ -41,8 +50,24 @@
             right: 0;
             bottom: 0;
             background: 
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px),
-                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px);
+                radial-gradient(1000px 600px at 50% 35%, rgba(0, 245, 255, 0.05), transparent 70%),
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(233, 240, 255, 0.024) 2px, rgba(233, 240, 255, 0.024) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(233, 240, 255, 0.02) 2px, rgba(233, 240, 255, 0.02) 4px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(1200px 900px at 50% 20%, transparent 45%, rgba(2, 3, 10, 0.55) 100%),
+                repeating-linear-gradient(180deg, rgba(233, 240, 255, 0.016), rgba(233, 240, 255, 0.016) 1px, transparent 1px, transparent 5px);
+            mix-blend-mode: soft-light;
             pointer-events: none;
             z-index: 1;
         }
@@ -64,7 +89,7 @@
             font-size: 3rem;
             font-weight: 800;
             letter-spacing: -0.02em;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--warning) 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--warning) 60%, var(--success) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -88,9 +113,9 @@
         }
 
         .stat-card {
-            background: rgba(64, 72, 83, 0.4);
+            background: rgba(14, 22, 48, 0.55);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 245, 255, 0.14);
             border-radius: 12px;
             padding: 1.5rem;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -105,7 +130,7 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--accent), var(--warning));
+            background: linear-gradient(90deg, var(--accent), var(--warning), var(--success));
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.3s ease;
@@ -113,8 +138,11 @@
 
         .stat-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(255, 217, 61, 0.3);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(0, 245, 255, 0.35);
+            box-shadow:
+                0 10px 45px rgba(0, 0, 0, 0.45),
+                0 0 0 1px rgba(255, 46, 166, 0.10),
+                0 0 32px var(--glowCyan);
         }
 
         .stat-card:hover::before {
@@ -135,15 +163,20 @@
             font-size: 2rem;
             font-weight: 700;
             color: var(--accent);
+            text-shadow: 0 0 18px rgba(0, 245, 255, 0.16);
         }
 
         .controls {
-            background: rgba(64, 72, 83, 0.4);
+            background: rgba(14, 22, 48, 0.55);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 245, 255, 0.14);
             border-radius: 12px;
             padding: 2rem;
             margin-bottom: 2rem;
+            box-shadow:
+                0 18px 60px rgba(0, 0, 0, 0.35),
+                0 0 0 1px rgba(0, 245, 255, 0.06),
+                0 0 40px rgba(0, 245, 255, 0.06);
             animation: fadeIn 0.8s ease-out 0.4s both;
         }
 
@@ -169,8 +202,8 @@
         }
 
         input, select {
-            background: rgba(26, 31, 38, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(7, 11, 20, 0.55);
+            border: 1px solid rgba(233, 240, 255, 0.10);
             border-radius: 8px;
             padding: 0.75rem 1rem;
             color: var(--concrete);
@@ -179,18 +212,24 @@
             transition: all 0.3s ease;
         }
 
+        input::placeholder {
+            color: rgba(142, 163, 212, 0.7);
+        }
+
         input:focus, select:focus {
             outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(255, 217, 61, 0.1);
+            border-color: rgba(0, 245, 255, 0.75);
+            box-shadow:
+                0 0 0 3px rgba(0, 245, 255, 0.12),
+                0 0 22px rgba(0, 245, 255, 0.12);
         }
 
         .btn {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--warning) 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--warning) 55%, var(--success) 100%);
             border: none;
             border-radius: 8px;
             padding: 1rem 2rem;
-            color: var(--steel);
+            color: #02030A;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.9rem;
             font-weight: 700;
@@ -222,7 +261,9 @@
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(255, 217, 61, 0.4);
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.45),
+                0 0 28px var(--glowMagenta);
         }
 
         .btn:active {
@@ -235,11 +276,15 @@
         }
 
         .inventory-table {
-            background: rgba(64, 72, 83, 0.4);
+            background: rgba(14, 22, 48, 0.55);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 245, 255, 0.14);
             border-radius: 12px;
             overflow: hidden;
+            box-shadow:
+                0 18px 60px rgba(0, 0, 0, 0.35),
+                0 0 0 1px rgba(255, 46, 166, 0.06),
+                0 0 40px rgba(255, 46, 166, 0.06);
             animation: fadeIn 0.8s ease-out 0.6s both;
         }
 
@@ -249,7 +294,7 @@
         }
 
         thead {
-            background: rgba(26, 31, 38, 0.6);
+            background: rgba(7, 11, 20, 0.65);
         }
 
         th {
@@ -260,6 +305,7 @@
             text-transform: uppercase;
             letter-spacing: 0.1em;
             color: var(--accent);
+            text-shadow: 0 0 14px rgba(0, 245, 255, 0.16);
             font-weight: 700;
         }
 
@@ -269,7 +315,7 @@
         }
 
         tbody tr:hover {
-            background: rgba(255, 217, 61, 0.05);
+            background: rgba(0, 245, 255, 0.06);
         }
 
         td {
@@ -288,15 +334,15 @@
         }
 
         .stock-low {
-            background: rgba(255, 107, 53, 0.2);
-            color: var(--warning);
-            border: 1px solid var(--warning);
+            background: rgba(255, 46, 166, 0.14);
+            color: #FFD2EE;
+            border: 1px solid rgba(255, 46, 166, 0.65);
         }
 
         .stock-ok {
-            background: rgba(0, 201, 167, 0.2);
-            color: var(--success);
-            border: 1px solid var(--success);
+            background: rgba(0, 255, 133, 0.12);
+            color: #CFFFF0;
+            border: 1px solid rgba(0, 255, 133, 0.6);
         }
 
         .actions {
@@ -305,8 +351,8 @@
         }
 
         .btn-small {
-            background: rgba(255, 217, 61, 0.1);
-            border: 1px solid var(--accent);
+            background: rgba(0, 245, 255, 0.08);
+            border: 1px solid rgba(0, 245, 255, 0.6);
             border-radius: 6px;
             padding: 0.5rem 1rem;
             color: var(--accent);
@@ -318,18 +364,21 @@
         }
 
         .btn-small:hover {
-            background: var(--accent);
-            color: var(--steel);
+            background: rgba(0, 245, 255, 0.18);
+            border-color: rgba(0, 245, 255, 0.85);
+            box-shadow: 0 0 22px rgba(0, 245, 255, 0.12);
+            transform: translateY(-1px);
         }
 
         .btn-delete {
-            border-color: var(--warning);
-            color: var(--warning);
+            border-color: rgba(255, 46, 166, 0.7);
+            color: #FFD2EE;
         }
 
         .btn-delete:hover {
-            background: var(--warning);
-            color: white;
+            background: rgba(255, 46, 166, 0.18);
+            border-color: rgba(255, 46, 166, 0.9);
+            box-shadow: 0 0 24px rgba(255, 46, 166, 0.12);
         }
 
         .empty-state {
