@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - IMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="top-nav">
+            <a href="index.html" class="nav-link">Dashboard</a>
+            <a href="suppliers.html" class="nav-link">Suppliers</a>
+            <a href="reports.html" class="nav-link active">Reports</a>
+            <a href="settings.html" class="nav-link">Settings</a>
+        </nav>
+        <header>
+            <h1>Reports</h1>
+            <div class="subtitle">Analytics & Insights</div>
+        </header>
+
+        <section class="analytics-card">
+            <div>
+                <div class="analytics-header">Finances</div>
+                <div class="analytics-title">Inventory Valuation</div>
+                <div class="analytics-subtitle">Current estimated value of all stock items, broken down by warehouse zones and predictive growth based on last month's inputs.</div>
+                <div class="analytics-metrics">
+                    <div class="analytics-metric">
+                        <div class="analytics-metric-label">Total Value</div>
+                        <div class="analytics-metric-value">$142,500</div>
+                        <div class="analytics-metric-pill">
+                            <span class="analytics-metric-pill-dot" style="background:var(--success)"></span>
+                            <span>+5.2% M/M</span>
+                        </div>
+                    </div>
+                    <div class="analytics-metric">
+                        <div class="analytics-metric-label">Projected EOY</div>
+                        <div class="analytics-metric-value">$165,000</div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                 <div class="analytics-bars-title">Value by Zone</div>
+                 <div class="analytics-bars-subtitle">Where is the most capital sitting?</div>
+                 <div class="analytics-bars">
+                    <div class="analytics-bar-row">
+                        <div class="analytics-bar-label">Zone A (Tech)</div>
+                        <div class="analytics-bar-track">
+                            <div class="analytics-bar-fill" style="width:55%"></div>
+                        </div>
+                        <div class="analytics-bar-value">55%</div>
+                    </div>
+                    <div class="analytics-bar-row">
+                        <div class="analytics-bar-label">Zone B (Heavy)</div>
+                        <div class="analytics-bar-track">
+                            <div class="analytics-bar-fill" style="width:30%"></div>
+                        </div>
+                        <div class="analytics-bar-value">30%</div>
+                    </div>
+                    <div class="analytics-bar-row">
+                        <div class="analytics-bar-label">Zone C (Misc)</div>
+                        <div class="analytics-bar-track">
+                            <div class="analytics-bar-fill" style="width:15%"></div>
+                        </div>
+                        <div class="analytics-bar-value">15%</div>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+        <section class="analytics-card" style="background: rgba(14, 22, 48, 0.5); border-color: rgba(255, 143, 183, 0.1);">
+            <div>
+                <div class="analytics-header">Operations</div>
+                <div class="analytics-title">Turnover Rates</div>
+                <div class="analytics-subtitle">How fast items are leaving the warehouse per category over the last 30 days.</div>
+                <div class="analytics-metrics">
+                    <div class="analytics-metric">
+                        <div class="analytics-metric-label">Fastest Moving</div>
+                        <div class="analytics-metric-value">Supplies</div>
+                    </div>
+                    <div class="analytics-metric">
+                        <div class="analytics-metric-label">Slowest Moving</div>
+                        <div class="analytics-metric-value">Equipment</div>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <button class="btn" style="width: 100%;"><span>Download Full PDF Report</span></button>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

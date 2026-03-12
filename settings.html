@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - IMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .settings-section {
+            margin-bottom: 2rem;
+        }
+        .settings-section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--concrete);
+            font-weight: 600;
+        }
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+            border: 1px solid rgba(255, 143, 183, 0.15);
+        }
+        .toggle-label {
+            font-weight: 600;
+            color: var(--concrete);
+        }
+        .toggle-desc {
+            font-size: 0.8rem;
+            color: var(--zinc);
+            margin-top: 0.2rem;
+        }
+        .toggle-switch {
+            width: 44px;
+            height: 24px;
+            background: rgba(159, 140, 165, 0.3);
+            border-radius: 999px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .toggle-switch.active {
+            background: linear-gradient(90deg, #FF8FB7, #BA8DFF);
+        }
+        .toggle-switch.active::after {
+            transform: translateX(20px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="top-nav">
+            <a href="index.html" class="nav-link">Dashboard</a>
+            <a href="suppliers.html" class="nav-link">Suppliers</a>
+            <a href="reports.html" class="nav-link">Reports</a>
+            <a href="settings.html" class="nav-link active">Settings</a>
+        </nav>
+        <header>
+            <h1>Settings</h1>
+            <div class="subtitle">System Configuration</div>
+        </header>
+
+        <div class="controls settings-section">
+            <h2>General Preferences</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Currency Symbol</label>
+                    <select>
+                        <option value="$">US Dollar ($)</option>
+                        <option value="€">Euro (€)</option>
+                        <option value="£">British Pound (£)</option>
+                        <option value="¥">Japanese Yen (¥)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Low Stock Threshold (Units)</label>
+                    <input type="number" value="10">
+                </div>
+            </div>
+            
+            <h2 style="margin-top:2rem;">Notifications</h2>
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Low Stock Alerts</div>
+                    <div class="toggle-desc">Receive email alerts when an item drops below the threshold.</div>
+                </div>
+                <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+            </div>
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Weekly Reports</div>
+                    <div class="toggle-desc">Automatically generate and email weekly inventory digests.</div>
+                </div>
+                <div class="toggle-switch" onclick="this.classList.toggle('active')"></div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <button class="btn"><span>Save Changes</span></button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
