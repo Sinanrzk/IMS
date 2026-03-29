@@ -4,60 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - IMS</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="design-tokens.css">
     <link rel="stylesheet" href="styles.css">
     <style>
         .settings-section {
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
         .settings-section h2 {
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            color: var(--concrete);
+            font-size: 1.15rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
             font-weight: 600;
         }
         .toggle-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(255, 255, 255, 0.6);
-            padding: 1rem 1.5rem;
+            padding: 1.25rem 1.5rem;
             border-radius: 12px;
-            margin-bottom: 0.5rem;
-            border: 1px solid rgba(255, 143, 183, 0.15);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
         }
         .toggle-label {
             font-weight: 600;
-            color: var(--concrete);
+            color: var(--text-primary);
         }
         .toggle-desc {
-            font-size: 0.8rem;
-            color: var(--zinc);
-            margin-top: 0.2rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
         }
         .toggle-switch {
             width: 44px;
             height: 24px;
-            background: rgba(159, 140, 165, 0.3);
+            background: rgba(255,255,255,0.1);
             border-radius: 999px;
             position: relative;
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.05);
         }
         .toggle-switch::after {
             content: '';
             position: absolute;
             top: 2px;
             left: 2px;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             background: white;
             border-radius: 50%;
             transition: all 0.3s ease;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         .toggle-switch.active {
-            background: linear-gradient(90deg, #FF8FB7, #BA8DFF);
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-color: transparent;
         }
         .toggle-switch.active::after {
             transform: translateX(20px);
@@ -65,58 +67,85 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <nav class="top-nav">
-            <a href="index.html" class="nav-link">Dashboard</a>
-            <a href="orders.html" class="nav-link">Orders</a>
-            <a href="customers.html" class="nav-link">Customers</a>
-            <a href="suppliers.html" class="nav-link">Suppliers</a>
-            <a href="reports.html" class="nav-link">Reports</a>
-            <a href="settings.html" class="nav-link active">Settings</a>
-        </nav>
-        <header>
-            <h1>Settings</h1>
-            <div class="subtitle">System Configuration</div>
-        </header>
-
-        <div class="controls settings-section">
-            <h2>General Preferences</h2>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label>Currency Symbol</label>
-                    <select>
-                        <option value="$">US Dollar ($)</option>
-                        <option value="€">Euro (€)</option>
-                        <option value="£">British Pound (£)</option>
-                        <option value="¥">Japanese Yen (¥)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Low Stock Threshold (Units)</label>
-                    <input type="number" value="10">
-                </div>
+    <div class="bg-orbs"><div class="orb-3"></div></div>
+    
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar glass">
+            <div class="brand">
+                <h1>IMS</h1>
+                <div class="subtitle">Command Center</div>
             </div>
             
-            <h2 style="margin-top:2rem;">Notifications</h2>
-            <div class="toggle-row">
-                <div>
-                    <div class="toggle-label">Low Stock Alerts</div>
-                    <div class="toggle-desc">Receive email alerts when an item drops below the threshold.</div>
-                </div>
-                <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
-            </div>
-            <div class="toggle-row">
-                <div>
-                    <div class="toggle-label">Weekly Reports</div>
-                    <div class="toggle-desc">Automatically generate and email weekly inventory digests.</div>
-                </div>
-                <div class="toggle-switch" onclick="this.classList.toggle('active')"></div>
-            </div>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Dashboard</a>
+                <a href="orders.html" class="nav-link">Orders</a>
+                <a href="customers.html" class="nav-link">Customers</a>
+                <a href="suppliers.html" class="nav-link">Suppliers</a>
+                <a href="reports.html" class="nav-link">Reports</a>
+                <a href="settings.html" class="nav-link active">Settings</a>
+            </nav>
 
-            <div style="margin-top: 2rem;">
-                <button class="btn"><span>Save Changes</span></button>
+            <div class="user-profile glass" style="padding: 1rem; border-radius: 12px; margin-top: auto; justify-content: flex-start; cursor: pointer;">
+                <div class="avatar">
+                    A
+                    <div class="status-dot"></div>
+                </div>
+                <div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">Admin</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Online</div>
+                </div>
             </div>
-        </div>
+        </aside>
+
+        <main class="animate-stagger">
+            <header class="page-header">
+                <h2>Settings</h2>
+            </header>
+
+            <div class="glass" style="padding: 2.5rem; max-width: 800px;">
+                <div class="settings-section">
+                    <h2>General Preferences</h2>
+                    <div class="bento-grid" style="grid-template-columns: 1fr 1fr;">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em;">Currency Symbol</label>
+                            <select class="glass-input glass-select">
+                                <option value="$">US Dollar ($)</option>
+                                <option value="€">Euro (€)</option>
+                                <option value="£">British Pound (£)</option>
+                                <option value="¥">Japanese Yen (¥)</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em;">Low Stock Threshold (Units)</label>
+                            <input type="number" class="glass-input" value="10">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h2>Notifications</h2>
+                    <div class="toggle-row glass" style="padding: 1.25rem 1.5rem;">
+                        <div>
+                            <div class="toggle-label">Low Stock Alerts</div>
+                            <div class="toggle-desc">Receive email alerts when an item drops below the threshold.</div>
+                        </div>
+                        <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                    </div>
+                    <div class="toggle-row glass" style="padding: 1.25rem 1.5rem;">
+                        <div>
+                            <div class="toggle-label">Weekly Reports</div>
+                            <div class="toggle-desc">Automatically generate and email weekly inventory digests.</div>
+                        </div>
+                        <div class="toggle-switch" onclick="this.classList.toggle('active')"></div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 3rem;">
+                    <button class="btn">Save Changes</button>
+                </div>
+            </div>
+        </main>
     </div>
 </body>
 </html>

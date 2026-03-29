@@ -4,120 +4,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orders - IMS</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="design-tokens.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <nav class="top-nav">
-            <a href="index.html" class="nav-link">Dashboard</a>
-            <a href="orders.html" class="nav-link active">Orders</a>
-            <a href="customers.html" class="nav-link">Customers</a>
-            <a href="suppliers.html" class="nav-link">Suppliers</a>
-            <a href="reports.html" class="nav-link">Reports</a>
-            <a href="settings.html" class="nav-link">Settings</a>
-        </nav>
-        <header>
-            <h1>Orders</h1>
-            <div class="subtitle">Order Management & Fulfillment</div>
-        </header>
+    <div class="bg-orbs"><div class="orb-3"></div></div>
+    
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar glass">
+            <div class="brand">
+                <h1>IMS</h1>
+                <div class="subtitle">Command Center</div>
+            </div>
+            
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Dashboard</a>
+                <a href="orders.html" class="nav-link active">Orders</a>
+                <a href="customers.html" class="nav-link">Customers</a>
+                <a href="suppliers.html" class="nav-link">Suppliers</a>
+                <a href="reports.html" class="nav-link">Reports</a>
+                <a href="settings.html" class="nav-link">Settings</a>
+            </nav>
 
-        <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
-            <div class="stat-card">
-                <div class="stat-label">Total Orders</div>
-                <div class="stat-value">1,248</div>
+            <div class="user-profile glass" style="padding: 1rem; border-radius: 12px; margin-top: auto; justify-content: flex-start; cursor: pointer;">
+                <div class="avatar">
+                    A
+                    <div class="status-dot"></div>
+                </div>
+                <div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">Admin</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Online</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-label">Pending Fulfillment</div>
-                <div class="stat-value">42</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Completed Today</div>
-                <div class="stat-value">15</div>
-            </div>
-        </div>
+        </aside>
 
-        <div class="controls">
-            <div class="form-grid">
-                <div class="form-group">
-                    <label>Order ID</label>
-                    <input type="text" placeholder="e.g. ORD-2023-001">
+        <!-- Main Content -->
+        <main class="animate-stagger">
+            <header class="page-header">
+                <h2>Orders</h2>
+            </header>
+
+            <div class="bento-grid">
+                <div class="bento-card glass">
+                    <div class="stat-label">Total Orders</div>
+                    <div class="stat-value">1,248</div>
                 </div>
-                <div class="form-group">
-                    <label>Customer Name</label>
-                    <input type="text" placeholder="Search Customer...">
+                <div class="bento-card glass">
+                    <div class="stat-label" style="color: var(--warning);">Pending Fulfillment</div>
+                    <div class="stat-value">42</div>
                 </div>
-                <div class="form-group">
-                    <label>Status</label>
-                    <select>
-                        <option>All</option>
+                <div class="bento-card glass">
+                    <div class="stat-label" style="color: var(--success);">Completed Today</div>
+                    <div class="stat-value">15</div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls-bar glass" style="padding: 1.5rem; border-radius: 12px;">
+                <div class="search-input-wrapper">
+                    <input type="text" class="glass-input" placeholder="Order ID (e.g. ORD-2023-001)">
+                </div>
+                <div class="search-input-wrapper">
+                    <input type="text" class="glass-input" placeholder="Customer Name">
+                </div>
+                <div class="search-input-wrapper" style="max-width: 150px;">
+                    <select class="glass-input glass-select">
+                        <option>All Status</option>
                         <option>Pending</option>
                         <option>Processing</option>
                         <option>Completed</option>
                         <option>Cancelled</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Date Range</label>
-                    <input type="date">
+                <div class="search-input-wrapper" style="max-width: 150px;">
+                    <input type="date" class="glass-input">
                 </div>
+                <button class="btn">Create Order</button>
             </div>
-            <button class="btn"><span>Create Order</span></button>
-        </div>
 
-        <div class="inventory-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Date</th>
-                        <th>Customer</th>
-                        <th>Items</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>ORD-1001</strong></td>
-                        <td>Sep 24, 2023</td>
-                        <td>TechNova Solutions</td>
-                        <td>4</td>
-                        <td>$1,250.00</td>
-                        <td><span class="stock-badge stock-ok">Completed</span></td>
-                        <td class="actions">
-                            <button class="btn-small">View</button>
-                            <button class="btn-small">Print</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>ORD-1002</strong></td>
-                        <td>Sep 25, 2023</td>
-                        <td>Global Industries</td>
-                        <td>12</td>
-                        <td>$3,400.50</td>
-                        <td><span class="stock-badge stock-low">Pending</span></td>
-                        <td class="actions">
-                            <button class="btn-small">View</button>
-                            <button class="btn-small">Process</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>ORD-1003</strong></td>
-                        <td>Sep 25, 2023</td>
-                        <td>Acme Corp</td>
-                        <td>1</td>
-                        <td>$45.00</td>
-                        <td><span class="stock-badge stock-ok" style="background: rgba(255,143,183,0.1); color: var(--rose);">Processing</span></td>
-                        <td class="actions">
-                            <button class="btn-small">View</button>
-                            <button class="btn-small">Update</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <!-- Table -->
+            <div class="table-container glass">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="td-mono">ORD-1001</td>
+                            <td class="td-mono">Sep 24, 2023</td>
+                            <td style="font-weight: 500;">TechNova Solutions</td>
+                            <td class="td-mono">4</td>
+                            <td class="td-mono" style="font-weight: 700;">$1,250.00</td>
+                            <td><span class="status-badge status-in-stock">Completed</span></td>
+                            <td>
+                                <div class="actions-cell">
+                                    <button class="btn-icon">👁</button>
+                                    <button class="btn-icon">🖨</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-mono">ORD-1002</td>
+                            <td class="td-mono">Sep 25, 2023</td>
+                            <td style="font-weight: 500;">Global Industries</td>
+                            <td class="td-mono">12</td>
+                            <td class="td-mono" style="font-weight: 700;">$3,400.50</td>
+                            <td><span class="status-badge status-out-stock">Pending</span></td>
+                            <td>
+                                <div class="actions-cell">
+                                    <button class="btn-icon">👁</button>
+                                    <button class="btn-icon">⚙</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-mono">ORD-1003</td>
+                            <td class="td-mono">Sep 25, 2023</td>
+                            <td style="font-weight: 500;">Acme Corp</td>
+                            <td class="td-mono">1</td>
+                            <td class="td-mono" style="font-weight: 700;">$45.00</td>
+                            <td><span class="status-badge status-low-stock">Processing</span></td>
+                            <td>
+                                <div class="actions-cell">
+                                    <button class="btn-icon">👁</button>
+                                    <button class="btn-icon">✎</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
     </div>
 </body>
 </html>
