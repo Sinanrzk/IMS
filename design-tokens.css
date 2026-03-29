@@ -1,0 +1,39 @@
+:root {
+  /* Colors */
+  --bg-gradient-start: #0f0c29;
+  --bg-gradient-mid: #141432;
+  --bg-gradient-end: #0d1b2a;
+  
+  --primary: #7c6fcd;
+  --secondary: #4fc3f7;
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  --danger-hover: #ef4444;
+
+  --text-primary: #e8e6f5;
+  --text-muted: rgba(255, 255, 255, 0.5);
+
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-bg-hover: rgba(255, 255, 255, 0.12);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.15);
+  --glass-border-focus: 1px solid var(--primary);
+  --glass-border-radius: 20px;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --glass-shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  --glass-blur: blur(20px) saturate(180%);
+
+  /* Typography */
+  --font-family: 'Plus Jakarta Sans', 'Sora', sans-serif;
+  --font-mono: 'JetBrains Mono', tabular-nums, monospace;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
